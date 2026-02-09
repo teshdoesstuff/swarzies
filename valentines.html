@@ -1,0 +1,247 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Swara</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 50%, #FFB6D9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        button {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 1.3em;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .yes-button {
+            background: #D2B48C;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        .yes-button:hover {
+            background: #C19A6B;
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .no-button {
+            background: #D2B48C;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .no-button:hover {
+            background: #C19A6B;
+        }
+        
+        .button-container {
+            position: relative;
+            min-height: 400px;
+            width: 100%;
+        }
+
+        #message {
+            font-size: 1.5em;
+            color: white;
+            margin-top: 20px;
+            display: none;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 300;
+        }
+
+        /* Heart animation styles */
+        .heart {
+            position: fixed;
+            font-size: 30px;
+            animation: fall linear forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .celebration {
+            font-size: 2em;
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Will you be my valentine?</h1>
+        <div class="button-container">
+            <div class="button-group">
+                <button class="yes-button" onclick="handleYes()">Yes</button>
+                <button class="no-button" id="noButton" onclick="handleNo()">No</button>
+            </div>
+        </div>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        const maxNoClicks = 10;
+
+        function handleYes() {
+            const message = document.getElementById("message");
+            message.textContent = "I Love You :3 ❤️";
+            message.style.display = "block";
+            message.classList.add("celebration");
+            
+            // Hide the no button
+            document.getElementById("noButton").style.display = "none";
+            
+            // Start heart shower
+            createHeartShower();
+        }
+
+        function handleNo() {
+            noClickCount++;
+            const message = document.getElementById("message");
+            const noButton = document.getElementById("noButton");
+            
+            if (noClickCount < maxNoClicks) {
+                message.textContent = "Are you sure? Please reconsider!";
+                message.style.display = "block";
+                
+                // Move the no button to a random position after first click
+                moveButton(noButton);
+            } else {
+                message.textContent = "Okay, you're my valentine anyway!";
+                message.style.display = "block";
+                message.classList.add("celebration");
+                noButton.style.display = "none";
+                noClickCount = 0;
+                
+                // Start heart shower
+                createHeartShower();
+            }
+        }
+
+        function moveButton(button) {
+            const buttonContainer = document.querySelector('.button-container');
+            
+            // On first move, set it to absolute positioning
+            if (button.style.position !== 'absolute') {
+                button.style.position = 'absolute';
+            }
+            
+            // Calculate random position within the button container
+            const maxX = buttonContainer.offsetWidth - button.offsetWidth - 10;
+            const maxY = buttonContainer.offsetHeight - button.offsetHeight - 10;
+            
+            const randomX = Math.max(10, Math.random() * maxX);
+            const randomY = Math.max(10, Math.random() * maxY);
+            
+            // Position button absolutely within container
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+        }
+
+        function createHeartShower() {
+            const heartEmojis = ['❤️', '💕', '💖', '💗', '💓', '💝', '💘'];
+            const duration = 10000; 
+            const interval = 100; 
+            
+            let elapsed = 0;
+            const heartInterval = setInterval(() => {
+                if (elapsed >= duration) {
+                    clearInterval(heartInterval);
+                    return;
+                }
+                
+                // Create 2-3 hearts at a time
+                for (let i = 0; i < Math.floor(Math.random() * 2) + 2; i++) {
+                    createHeart();
+                }
+                
+                elapsed += interval;
+            }, interval);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            const heartEmojis = ['❤️', '💕', '💖', '💗', '💓', '💝', '💘'];
+            
+            heart.className = 'heart';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
+            
+            document.body.appendChild(heart);
+            
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
